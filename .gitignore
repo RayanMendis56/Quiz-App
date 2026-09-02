@@ -1,0 +1,15 @@
+# Java / Spring Boot
+backend/target/
+backend/.idea/
+backend/*.iml
+backend/.mvn/
+!backend/.mvn/wrapper/maven-wrapper.jar
+
+# Node / React
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# General
+.DS_Store
+*.log
