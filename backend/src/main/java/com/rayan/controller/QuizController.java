@@ -2,6 +2,7 @@ package com.rayan.controller;
 
 import com.rayan.model.Question;
 import com.rayan.model.QuestionWrapper;
+import com.rayan.model.Response;
 import com.rayan.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,10 @@ public class QuizController {
         return quizService.getQuizQuestions(id);
     }
 
-    
+    @PostMapping("submit/{id}")
+    public ResponseEntity<Integer> submitAnswer(@PathVariable Integer id, @RequestBody List<Response> responses){
+        return quizService.calculateResult(id, responses);
+    }
+
 
 }
