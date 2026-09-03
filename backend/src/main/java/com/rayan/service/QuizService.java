@@ -53,13 +53,19 @@ public class QuizService {
         Quiz quiz = quizOpt.get();
         List<Question> questions = quiz.getQuestions();
 
+        Map<Integer, Question> questionMap = new HashMap<>();
+        for (Question q : questions) {
+            questionMap.put(q.getId(), q);
+        }
+
         int right = 0;
-        int n = Math.min(responses.size(), questions.size());
-        for (int i = 0; i < n; i++) {
-            Response resp = responses.get(i);
+        for (Response resp : responses) {
+            Question question = questionMap.get(resp.getId());
+            if (question == null) continue;
+
             try {
                 Integer given = Integer.valueOf(resp.getResponse());
-                if (given.equals(questions.get(i).getCorrect_answer())) {
+                if (given.equals(question.getCorrect_answer())) {
                     right++;
                 }
             } catch (NumberFormatException e) {
