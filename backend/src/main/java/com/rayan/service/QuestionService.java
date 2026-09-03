@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuestionService {
@@ -33,4 +34,25 @@ public class QuestionService {
         questionRepository.deleteById(id);
         return "Question with id " + id + " deleted successfully";
     }
+
+    public String updateQuestion(int id, Question updatedQuestion) {
+        Optional<Question> existingQuestion = questionRepository.findById(id);
+        if (existingQuestion.isEmpty()) {
+            return "Question with id " + id + " not found";
+        }
+
+        Question question = existingQuestion.get();
+        question.setQuestion_text(updatedQuestion.getQuestion_text());
+        question.setCategory(updatedQuestion.getCategory());
+        question.setLevel(updatedQuestion.getLevel());
+        question.setOption1(updatedQuestion.getOption1());
+        question.setOption2(updatedQuestion.getOption2());
+        question.setOption3(updatedQuestion.getOption3());
+        question.setOption4(updatedQuestion.getOption4());
+        question.setCorrect_answer(updatedQuestion.getCorrect_answer());
+
+        questionRepository.save(question);
+        return "Question updated successfully";
+    }
+
 }
