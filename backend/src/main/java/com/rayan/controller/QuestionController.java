@@ -1,9 +1,8 @@
 package com.rayan.controller;
 
-import com.rayan.Question;
+import com.rayan.model.Question;
 import com.rayan.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
