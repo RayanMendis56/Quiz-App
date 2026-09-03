@@ -3,6 +3,7 @@ package com.rayan.service;
 import com.rayan.model.Question;
 import com.rayan.model.QuestionWrapper;
 import com.rayan.model.Quiz;
+import com.rayan.model.Response;
 import com.rayan.repository.QuestionRepository;
 import com.rayan.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,27 @@ public class QuizService {
     }
 
 
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+        Optional<Quiz> quizOpt = quizRepository.findById(id);
+        if (quizOpt.isEmpty()) {
+            return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
+        }
+        Quiz quiz = quizOpt.get();
+        List<Question> questions = quiz.getQuestions();
 
+        int right = 0;
+        int n = Math.min(responses.size(), questions.size());
+        for (int i = 0; i < n; i++) {
+            Response resp = responses.get(i);
+            try {
+                Integer given = Integer.valueOf(resp.getResponse());
+                if (given.equals(questions.get(i).getCorrect_answer())) {
+                    right++;
+                }
+            } catch (NumberFormatException e) {
+                // invalid answer format - treat as incorrect
+            }
+        }
+        return new ResponseEntity<>(right, HttpStatus.OK);
+    }
 }
