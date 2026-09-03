@@ -1,4 +1,4 @@
-package com.rayan;
+package com.rayan.model;
 
 
 import jakarta.persistence.Entity;
