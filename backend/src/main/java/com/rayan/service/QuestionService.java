@@ -25,4 +25,12 @@ public class QuestionService {
         questionRepository.save(question);
         return "Question added successfully";
     }
+
+    public String deleteQuestion(Integer id) {
+        if(!questionRepository.existsById(id)){
+            return "Question with id " + id + " does not exist";
+        }
+        questionRepository.deleteById(id);
+        return "Question with id " + id + " deleted successfully";
+    }
 }
