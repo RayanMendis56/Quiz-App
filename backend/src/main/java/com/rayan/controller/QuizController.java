@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("quiz")
 public class QuizController {
@@ -19,7 +19,7 @@ public class QuizController {
     QuizService quizService;
 
     @PostMapping("create")
-    public ResponseEntity<String> createQuiz(@RequestParam String category,@RequestParam int numQ,@RequestParam String title){
+    public ResponseEntity<Integer> createQuiz(@RequestParam String category,@RequestParam int numQ,@RequestParam String title){
         return quizService.createQuiz(category,numQ,title);
     }
 
