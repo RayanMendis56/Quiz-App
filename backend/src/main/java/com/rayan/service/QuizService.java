@@ -21,7 +21,7 @@ public class QuizService {
     @Autowired
     QuestionRepository questionRepository;
 
-    public ResponseEntity<String> createQuiz(String category, int numQ, String title) {
+    public ResponseEntity<Integer> createQuiz(String category, int numQ, String title) {
 
         List<Question> questions=questionRepository.findRandomQuestionsByCategory(category,numQ);
 
@@ -30,7 +30,7 @@ public class QuizService {
         quiz.setQuestions(questions);
         quizRepository.save(quiz);
 
-        return new ResponseEntity<>("Success",HttpStatus.CREATED);
+        return new ResponseEntity<>(quiz.getId(), HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
