@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './WelcomeScreen.css';
 
-function WelcomeScreen({ onStartQuiz }) {
+function WelcomeScreen({ onStartQuiz , onViewLeaderboard}) {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('java');
   const [level, setLevel] = useState('easy');
@@ -64,6 +64,9 @@ function WelcomeScreen({ onStartQuiz }) {
 
       <button className="start-button" onClick={handleStart}>
         Start Quiz
+      </button>
+      <button className="secondary-button" onClick={onViewLeaderboard}>
+        View Leaderboard
       </button>
     </div>
   );

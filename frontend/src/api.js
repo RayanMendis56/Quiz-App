@@ -37,3 +37,16 @@ export async function submitQuiz(quizId, responses, playerName) {
 
   return response.json();
 }
+
+export async function getLeaderboard(category) {
+  const path = category
+    ? `/leaderboard/top/${encodeURIComponent(category)}`
+    : '/leaderboard/top';
+  const response = await fetch(`${BASE_URL}${path}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch leaderboard');
+  }
+
+  return response.json();
+}

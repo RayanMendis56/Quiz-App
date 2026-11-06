@@ -8,7 +8,7 @@ function getMessage(percentage) {
   return 'Keep learning, you will get there!';
 }
 
-function ScoreScreen({ playerName, score, total, onTryAgain }) {
+function ScoreScreen({ playerName, score, total, onTryAgain, onViewLeaderboard}) {
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
   const correctPercentage = total > 0 ? (score / total) * 100 : 0;
 
@@ -31,6 +31,9 @@ function ScoreScreen({ playerName, score, total, onTryAgain }) {
       <button className="try-again-button" onClick={onTryAgain}>
         Try Again
       </button>
+        <button className="secondary-button" onClick={onViewLeaderboard}>
+        View Leaderboard
+        </button>
     </div>
   );
 }
