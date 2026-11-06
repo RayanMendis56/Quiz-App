@@ -1,0 +1,64 @@
+.leaderboard-container {
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0 24px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-tab:hover {
+  background-color: #f3f4f6;
+}
+
+.filter-tab.active {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.leaderboard-table th {
+  font-size: 13px;
+  color: #777;
+}
+
+.category-cell {
+  text-transform: capitalize;
+}
+
+.leaderboard-message {
+  color: #555;
+  margin: 24px 0;
+}

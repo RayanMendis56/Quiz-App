@@ -1,9 +1,7 @@
 package com.rayan.service;
 
-import com.rayan.model.Question;
-import com.rayan.model.QuestionWrapper;
-import com.rayan.model.Quiz;
-import com.rayan.model.Response;
+import com.rayan.model.*;
+import com.rayan.repository.LeaderboardRepository;
 import com.rayan.repository.QuestionRepository;
 import com.rayan.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,8 @@ public class QuizService {
     QuizRepository quizRepository;
     @Autowired
     QuestionRepository questionRepository;
+    @Autowired
+    LeaderboardRepository leaderboardRepository;
 
     public ResponseEntity<Integer> createQuiz(String category, int numQ, String title) {
 
@@ -45,7 +45,7 @@ public class QuizService {
     }
 
 
-    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses) {
+    public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses, String playerName) {
         Optional<Quiz> quizOpt = quizRepository.findById(id);
         if (quizOpt.isEmpty()) {
             return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
@@ -72,6 +72,25 @@ public class QuizService {
                 // invalid answer format - treat as incorrect
             }
         }
+
+        saveToLeaderboard(playerName, questions, right);
         return new ResponseEntity<>(right, HttpStatus.OK);
     }
+
+    private void saveToLeaderboard(String playerName, List<Question> questions, int score) {
+        try {
+            if (questions.isEmpty()) return;
+
+            LeaderboardEntry entry = new LeaderboardEntry();
+            entry.setPlayerName(playerName);
+            entry.setCategory(questions.get(0).getCategory());
+            entry.setScore(score);
+            entry.setTotal(questions.size());
+            leaderboardRepository.save(entry);
+        } catch (Exception e) {
+            e.printStackTrace(); // a leaderboard failure should never block the player's score
+        }
+    }
+
+
 }

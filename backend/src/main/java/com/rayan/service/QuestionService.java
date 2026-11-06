@@ -1,6 +1,7 @@
 package com.rayan.service;
 
 import com.rayan.model.Question;
+import com.rayan.model.QuestionWrapper;
 import com.rayan.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +18,22 @@ public class QuestionService {
     @Autowired
     QuestionRepository questionRepository;
 
-    public ResponseEntity<List<Question>> getAllQuestions(){
+    public ResponseEntity<List<QuestionWrapper>> getAllQuestions(){
         try{
-            return new ResponseEntity<>(questionRepository.findAll(), HttpStatus.OK);
-        }
-        catch (Exception e){
+            return new ResponseEntity<>(toWrappers(questionRepository.findAll()), HttpStatus.OK);
+        } catch (Exception e){
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    public ResponseEntity<List<Question>> getQuestionsByCategory(String category) {
+    public ResponseEntity<List<QuestionWrapper>> getQuestionsByCategory(String category) {
         try{
-            return new ResponseEntity<>(questionRepository.findByCategory(category), HttpStatus.OK);
+            return new ResponseEntity<>(toWrappers(questionRepository.findByCategory(category)), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<String> addQuestion(Question question) {
@@ -83,6 +83,15 @@ public class QuestionService {
             e.printStackTrace();
         }
         return new ResponseEntity<>("Failed to update question", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private List<QuestionWrapper> toWrappers(List<Question> questions) {
+        List<QuestionWrapper> wrappers = new ArrayList<>();
+        for (Question q : questions) {
+            wrappers.add(new QuestionWrapper(q.getId(), q.getQuestion_text(),
+                    q.getOption1(), q.getOption2(), q.getOption3(), q.getOption4()));
+        }
+        return wrappers;
     }
 
 }

@@ -23,8 +23,9 @@ export async function getQuizQuestions(quizId) {
   return response.json();
 }
 
-export async function submitQuiz(quizId, responses) {
-  const response = await fetch(`${BASE_URL}/quiz/submit/${quizId}`, {
+export async function submitQuiz(quizId, responses, playerName) {
+  const params = new URLSearchParams({ playerName });
+  const response = await fetch(`${BASE_URL}/quiz/submit/${quizId}?${params.toString()}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(responses),
@@ -32,6 +33,19 @@ export async function submitQuiz(quizId, responses) {
 
   if (!response.ok) {
     throw new Error('Failed to submit quiz');
+  }
+
+  return response.json();
+}
+
+export async function getLeaderboard(category) {
+  const path = category
+    ? `/leaderboard/top/${encodeURIComponent(category)}`
+    : '/leaderboard/top';
+  const response = await fetch(`${BASE_URL}${path}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch leaderboard');
   }
 
   return response.json();
