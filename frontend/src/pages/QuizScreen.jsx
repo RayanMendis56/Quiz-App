@@ -6,6 +6,7 @@ function QuizScreen({ quizId, questions, onFinish }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [responses, setResponses] = useState([]);
+  const [pendingResponses, setPendingResponses] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,7 +17,26 @@ function QuizScreen({ quizId, questions, onFinish }) {
     setSelectedOption(optionNumber);
   };
 
+  const submitResponses = async (responsesToSubmit) => {
+    setSubmitting(true);
+    try {
+      const score = await submitQuiz(quizId, responsesToSubmit);
+      onFinish(score);
+    } catch (err) {
+      console.error(err);
+      setError('Something went wrong submitting your quiz.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleNext = async () => {
+    if (isLastQuestion && pendingResponses) {
+      setError('');
+      await submitResponses(pendingResponses);
+      return;
+    }
+
     if (selectedOption === null) {
       setError('Please select an answer before continuing.');
       return;
@@ -31,16 +51,8 @@ function QuizScreen({ quizId, questions, onFinish }) {
     setSelectedOption(null);
 
     if (isLastQuestion) {
-      setSubmitting(true);
-      try {
-        const score = await submitQuiz(quizId, updatedResponses);
-        onFinish(score);
-      } catch (err) {
-        console.error(err);
-        setError('Something went wrong submitting your quiz.');
-      } finally {
-        setSubmitting(false);
-      }
+      setPendingResponses(updatedResponses);
+      await submitResponses(updatedResponses);
     } else {
       setCurrentIndex(currentIndex + 1);
     }
