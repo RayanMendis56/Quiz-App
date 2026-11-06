@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import './QuizScreen.css';
 import { submitQuiz } from '../api';
 
-function QuizScreen({ quizId, questions, playerName }) {
+function QuizScreen({ quizId, questions, onFinish }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [responses, setResponses] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [result, setResult] = useState(null);
 
   const currentQuestion = questions[currentIndex];
   const isLastQuestion = currentIndex === questions.length - 1;
@@ -35,7 +34,7 @@ function QuizScreen({ quizId, questions, playerName }) {
       setSubmitting(true);
       try {
         const score = await submitQuiz(quizId, updatedResponses);
-        setResult(score);
+        onFinish(score);
       } catch (err) {
         console.error(err);
         setError('Something went wrong submitting your quiz.');
@@ -46,17 +45,6 @@ function QuizScreen({ quizId, questions, playerName }) {
       setCurrentIndex(currentIndex + 1);
     }
   };
-
-  if (result !== null) {
-    return (
-      <div className="quiz-container">
-        <h2>Nice work, {playerName}!</h2>
-        <p className="score-text">
-          You scored {result} out of {questions.length}
-        </p>
-      </div>
-    );
-  }
 
   if (!currentQuestion) {
     return <p>Loading question...</p>;

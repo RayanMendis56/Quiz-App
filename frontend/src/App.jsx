@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './App.css';
 import WelcomeScreen from './pages/WelcomeScreen';
 import QuizScreen from './pages/QuizScreen';
+import ScoreScreen from './pages/ScoreScreen';
 import { createQuiz, getQuizQuestions } from './api';
 
 function App() {
   const [screen, setScreen] = useState('welcome'); // 'welcome' | 'quiz' | 'score'
   const [quizId, setQuizId] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [score, setScore] = useState(null);
   const [playerName, setPlayerName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -32,6 +34,18 @@ function App() {
     }
   };
 
+  const handleFinish = (finalScore) => {
+    setScore(finalScore);
+    setScreen('score');
+  };
+
+  const handleTryAgain = () => {
+    setQuizId(null);
+    setQuestions([]);
+    setScore(null);
+    setScreen('welcome');
+  };
+
   return (
     <div className="App">
       {screen === 'welcome' && (
@@ -46,7 +60,16 @@ function App() {
         <QuizScreen
           quizId={quizId}
           questions={questions}
+          onFinish={handleFinish}
+        />
+      )}
+
+      {screen === 'score' && (
+        <ScoreScreen
           playerName={playerName}
+          score={score}
+          total={questions.length}
+          onTryAgain={handleTryAgain}
         />
       )}
     </div>

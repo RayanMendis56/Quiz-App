@@ -1,0 +1,52 @@
+.score-container {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  margin: 24px auto;
+  border-radius: 50%;
+  border: 8px solid #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-percentage {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.score-detail {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.score-message {
+  color: #555;
+  margin-bottom: 24px;
+}
+
+.try-again-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.try-again-button:hover {
+  background-color: #1d4ed8;
+}
