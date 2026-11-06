@@ -16,6 +16,7 @@ test('retries final submission without adding the last answer again', async () =
   render(
     <QuizScreen
       quizId={123}
+      playerName="Alex"
       questions={[
         {
           id: 1,
@@ -52,8 +53,8 @@ test('retries final submission without adding the last answer again', async () =
     { id: 1, response: '2' },
     { id: 2, response: '3' },
   ];
-  expect(submitQuiz).toHaveBeenNthCalledWith(1, 123, expectedResponses);
-  expect(submitQuiz).toHaveBeenNthCalledWith(2, 123, expectedResponses);
+  expect(submitQuiz).toHaveBeenNthCalledWith(1, 123, expectedResponses, 'Alex');
+  expect(submitQuiz).toHaveBeenNthCalledWith(2, 123, expectedResponses, 'Alex');
 });
 
 test('advances after 30 seconds, retaining selected answers and marking skipped answers wrong', async () => {
@@ -64,6 +65,7 @@ test('advances after 30 seconds, retaining selected answers and marking skipped 
   render(
     <QuizScreen
       quizId={123}
+      playerName="Alex"
       questions={[
         {
           id: 1,
@@ -104,5 +106,5 @@ test('advances after 30 seconds, retaining selected answers and marking skipped 
   expect(submitQuiz).toHaveBeenCalledWith(123, [
     { id: 1, response: '2' },
     { id: 2, response: '0' },
-  ]);
+  ], 'Alex');
 });

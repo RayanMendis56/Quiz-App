@@ -60,6 +60,7 @@ function App() {
         <QuizScreen
           quizId={quizId}
           questions={questions}
+          playerName={playerName}
           onFinish={handleFinish}
         />
       )}

@@ -23,8 +23,9 @@ export async function getQuizQuestions(quizId) {
   return response.json();
 }
 
-export async function submitQuiz(quizId, responses) {
-  const response = await fetch(`${BASE_URL}/quiz/submit/${quizId}`, {
+export async function submitQuiz(quizId, responses, playerName) {
+  const params = new URLSearchParams({ playerName });
+  const response = await fetch(`${BASE_URL}/quiz/submit/${quizId}?${params.toString()}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(responses),

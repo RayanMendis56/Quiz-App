@@ -4,7 +4,7 @@ import { submitQuiz } from '../api';
 
 const QUESTION_TIME_LIMIT = 30;
 
-function QuizScreen({ quizId, questions, onFinish }) {
+function QuizScreen({ quizId, questions, playerName, onFinish }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
   const [responses, setResponses] = useState([]);
@@ -24,7 +24,7 @@ function QuizScreen({ quizId, questions, onFinish }) {
   const submitResponses = async (responsesToSubmit) => {
     setSubmitting(true);
     try {
-      const score = await submitQuiz(quizId, responsesToSubmit);
+      const score = await submitQuiz(quizId, responsesToSubmit, playerName);
       onFinish(score);
     } catch (err) {
       console.error(err);
