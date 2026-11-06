@@ -29,8 +29,10 @@ public class QuizController {
     }
 
     @PostMapping("submit/{id}")
-    public ResponseEntity<Integer> submitAnswer(@PathVariable Integer id, @RequestBody List<Response> responses){
-        return quizService.calculateResult(id, responses);
+    public ResponseEntity<Integer> submitAnswer(@PathVariable Integer id,
+                                                @RequestParam(defaultValue = "Anonymous") String playerName,
+                                                @RequestBody List<Response> responses){
+        return quizService.calculateResult(id, responses, playerName);
     }
 
 
