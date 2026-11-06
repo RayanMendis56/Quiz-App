@@ -13,13 +13,26 @@
   height: 140px;
   margin: 24px auto;
   border-radius: 50%;
-  border: 8px solid #2563eb;
+  position: relative;
+  background: conic-gradient(
+    #2563eb 0 var(--correct-percentage),
+    #dc2626 var(--correct-percentage) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.score-circle::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+
 .score-percentage {
+  position: relative;
   font-size: 36px;
   font-weight: bold;
   color: #2563eb;

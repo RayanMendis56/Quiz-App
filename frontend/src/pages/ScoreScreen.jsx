@@ -10,12 +10,16 @@ function getMessage(percentage) {
 
 function ScoreScreen({ playerName, score, total, onTryAgain }) {
   const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+  const correctPercentage = total > 0 ? (score / total) * 100 : 0;
 
   return (
     <div className="score-container">
       <h2>Quiz Complete, {playerName}!</h2>
 
-      <div className="score-circle">
+      <div
+        className="score-circle"
+        style={{ '--correct-percentage': `${correctPercentage}%` }}
+      >
         <span className="score-percentage">{percentage}%</span>
       </div>
 
