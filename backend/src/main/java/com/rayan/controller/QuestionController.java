@@ -1,6 +1,7 @@
 package com.rayan.controller;
 
 import com.rayan.model.Question;
+import com.rayan.model.QuestionWrapper;
 import com.rayan.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +17,12 @@ public class QuestionController {
     QuestionService questionService;
 
     @GetMapping("allQuestions")
-    public ResponseEntity<List<Question>> getAllQuestions(){
+    public ResponseEntity<List<QuestionWrapper>> getAllQuestions(){
         return questionService.getAllQuestions();
     }
 
     @GetMapping("category/{category}")
-    public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category){
+    public ResponseEntity<List<QuestionWrapper>> getQuestionsByCategory(@PathVariable String category){
         return questionService.getQuestionsByCategory(category);
     }
 
