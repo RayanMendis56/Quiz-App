@@ -15,6 +15,7 @@ public class LeaderboardEntry {
 
     private String playerName;
     private String category;
+    private String level;
     private int score;
     private int total;
     private LocalDateTime createdAt;

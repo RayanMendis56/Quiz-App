@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:8080';
 
-export async function createQuiz({ category, numQ, title }) {
-  const params = new URLSearchParams({ category, numQ, title });
+export async function createQuiz({ category, level, numQ, title }) {
+  const params = new URLSearchParams({ category, level, numQ, title });
   const response = await fetch(`${BASE_URL}/quiz/create?${params.toString()}`, {
     method: 'POST',
   });

@@ -21,16 +21,18 @@ public class QuizService {
     @Autowired
     LeaderboardRepository leaderboardRepository;
 
-    public ResponseEntity<Integer> createQuiz(String category, int numQ, String title) {
+    public ResponseEntity<Integer> createQuiz(String category, String level, int numQ, String title) {
+        List<Question> questions = questionRepository.findRandomQuestionsByCategoryAndLevel(category, level, numQ);
 
-        List<Question> questions=questionRepository.findRandomQuestionsByCategory(category,numQ);
+        if (questions.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        Quiz quiz=new Quiz();
+        Quiz quiz = new Quiz();
         quiz.setTitle(title);
         quiz.setQuestions(questions);
-        quizRepository.save(quiz);
-
-        return new ResponseEntity<>(quiz.getId(), HttpStatus.CREATED);
+        Quiz savedQuiz = quizRepository.save(quiz);
+        return new ResponseEntity<>(savedQuiz.getId(), HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
@@ -84,6 +86,7 @@ public class QuizService {
             LeaderboardEntry entry = new LeaderboardEntry();
             entry.setPlayerName(playerName);
             entry.setCategory(questions.get(0).getCategory());
+            entry.setLevel(questions.get(0).getLevel());
             entry.setScore(score);
             entry.setTotal(questions.size());
             leaderboardRepository.save(entry);

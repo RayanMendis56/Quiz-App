@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './WelcomeScreen.css';
 
+const DEFAULT_NUM_QUESTIONS = 5;
+
 function WelcomeScreen({ onStartQuiz , onViewLeaderboard}) {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('java');
   const [level, setLevel] = useState('easy');
-  const numQ = 5;
   const [error, setError] = useState('');
 
   const handleStart = () => {
@@ -14,8 +15,7 @@ function WelcomeScreen({ onStartQuiz , onViewLeaderboard}) {
       return;
     }
     setError('');
-    // TODO: once backend supports level filtering, pass `level` into onStartQuiz too
-    onStartQuiz({ name: name.trim(), category, numQ });
+    onStartQuiz({ name: name.trim(), category, level, numQ: DEFAULT_NUM_QUESTIONS });
   };
 
   return (

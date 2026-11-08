@@ -67,6 +67,7 @@ function LeaderboardScreen({ onBack }) {
               <th>Rank</th>
               <th>Player</th>
               <th>Category</th>
+              <th>Level</th>
               <th>Score</th>
             </tr>
           </thead>
@@ -76,6 +77,7 @@ function LeaderboardScreen({ onBack }) {
                 <td>{index + 1}</td>
                 <td>{entry.playerName}</td>
                 <td className="category-cell">{entry.category}</td>
+                <td className="category-cell">{entry.level || 'N/A'}</td>
                 <td>
                   {entry.score}/{entry.total}
                 </td>
