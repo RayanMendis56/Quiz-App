@@ -15,12 +15,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleStartQuiz = async ({ name, category, numQ }) => {
+  const handleStartQuiz = async ({ name, category, level, numQ }) => {
     setLoading(true);
     setError('');
     try {
-      const title = `${category} quiz for ${name}`;
-      const newQuizId = await createQuiz({ category, numQ, title });
+      const title = `${category} ${level} quiz for ${name}`;
+      const newQuizId = await createQuiz({ category, level, numQ, title });
       const fetchedQuestions = await getQuizQuestions(newQuizId);
 
       setPlayerName(name);
