@@ -86,6 +86,7 @@ public class QuizService {
             LeaderboardEntry entry = new LeaderboardEntry();
             entry.setPlayerName(playerName);
             entry.setCategory(questions.get(0).getCategory());
+            entry.setLevel(questions.get(0).getLevel());
             entry.setScore(score);
             entry.setTotal(questions.size());
             leaderboardRepository.save(entry);
