@@ -29,6 +29,7 @@ function WelcomeScreen({ onStartQuiz , onViewLeaderboard}) {
           id="name"
           type="text"
           placeholder="Enter your name"
+          maxLength={30}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

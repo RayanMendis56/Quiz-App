@@ -3,6 +3,7 @@ package com.rayan.controller;
 import com.rayan.model.Question;
 import com.rayan.model.QuestionWrapper;
 import com.rayan.service.QuestionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class QuestionController {
     }
 
     @PostMapping("add")
-    public ResponseEntity<String> addQuestion(@RequestBody Question question){
+    public ResponseEntity<String> addQuestion(@Valid @RequestBody Question question){
         return questionService.addQuestion(question);
     }
 
@@ -37,8 +38,8 @@ public class QuestionController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<String> updateQuestion(@PathVariable Integer id, @RequestBody Question question){
-        return questionService.updateQuestion(id, question);
+    public ResponseEntity<String> updateQuestion(@PathVariable Integer id, @Valid @RequestBody Question updatedQuestion){
+        return questionService.updateQuestion(id, updatedQuestion);
     }
 
 
