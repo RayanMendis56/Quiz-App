@@ -1,9 +1,11 @@
 package com.rayan.service;
 
+import com.rayan.exception.ResourceNotFoundException;
 import com.rayan.model.*;
 import com.rayan.repository.LeaderboardRepository;
 import com.rayan.repository.QuestionRepository;
 import com.rayan.repository.QuizRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class QuizService {
 
@@ -25,7 +28,8 @@ public class QuizService {
         List<Question> questions = questionRepository.findRandomQuestionsByCategoryAndLevel(category, level, numQ);
 
         if (questions.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException(
+                    "No questions found for category '" + category + "' and level '" + level + "'");
         }
 
         Quiz quiz = new Quiz();
@@ -36,23 +40,21 @@ public class QuizService {
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id) {
-        Optional<Quiz> quiz = quizRepository.findById(id);
-        List<Question> questionFromDB=quiz.get().getQuestions();
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Quiz with id " + id + " not found"));
 
-        List<QuestionWrapper> questionsForUser=new ArrayList<>();
-        for(Question q: questionFromDB){
-            questionsForUser.add(new QuestionWrapper(q.getId(),q.getQuestion_text(),q.getOption1(),q.getOption2(),q.getOption3(),q.getOption4()));
+        List<QuestionWrapper> questionsForUser = new ArrayList<>();
+        for (Question q : quiz.getQuestions()) {
+            questionsForUser.add(new QuestionWrapper(q.getId(), q.getQuestion_text(),
+                    q.getOption1(), q.getOption2(), q.getOption3(), q.getOption4()));
         }
-        return new ResponseEntity<>(questionsForUser,HttpStatus.OK);
+        return new ResponseEntity<>(questionsForUser, HttpStatus.OK);
     }
 
 
     public ResponseEntity<Integer> calculateResult(Integer id, List<Response> responses, String playerName) {
-        Optional<Quiz> quizOpt = quizRepository.findById(id);
-        if (quizOpt.isEmpty()) {
-            return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
-        }
-        Quiz quiz = quizOpt.get();
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Quiz with id " + id + " not found"));
         List<Question> questions = quiz.getQuestions();
 
         Map<Integer, Question> questionMap = new HashMap<>();
@@ -91,7 +93,7 @@ public class QuizService {
             entry.setTotal(questions.size());
             leaderboardRepository.save(entry);
         } catch (Exception e) {
-            e.printStackTrace(); // a leaderboard failure should never block the player's score
+            log.error("Could not save leaderboard entry", e);
         }
     }
 
